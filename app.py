@@ -35,11 +35,11 @@ with st.sidebar:
     rfm_date = st.date_input("Tanggal Referensi", value=datetime.now().date())
     
     st.subheader("Clustering Parameters")
-    n_clusters = st.slider("Jumlah Cluster", 2, 6, 4)
+    n_clusters = st.slider("Jumlah Cluster", 2, 6, 3)
     
     st.subheader("Association Rules")
     min_support = st.slider("Min Support", 0.01, 0.2, 0.05, 0.01)
-    min_confidence = st.slider("Min Confidence", 0.1, 0.8, 0.5, 0.05)
+    min_confidence = st.slider("Min Confidence", 0.1, 0.8, 0.5, 0.10)
 
 # Fungsi untuk memuat data
 @st.cache_data
