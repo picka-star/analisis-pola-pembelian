@@ -604,17 +604,17 @@ def main():
                             #st.write(f"- {rec}")
                         
                         # Add association-based recommendations if available
-                        #if 'association_results' in locals() and cluster_num in association_results:
-                            #rules = association_results[cluster_num]
-                            #if len(rules) > 0:
-                                #st.write("**Rekomendasi Produk Berdasarkan Asosiasi:**")
-                                #top_rule = rules.iloc[0]
-                                #antecedents = list(top_rule['antecedents'])
-                                #consequents = list(top_rule['consequents'])
+                        if 'association_results' in locals() and cluster_num in association_results:
+                            rules = association_results[cluster_num]
+                            if len(rules) > 0:
+                                st.write("**Rekomendasi Produk Berdasarkan Asosiasi:**")
+                                top_rule = rules.iloc[0]
+                                antecedents = list(top_rule['antecedents'])
+                                consequents = list(top_rule['consequents'])
                                 
-                                #st.write(f"- **Bundling**: Gabungkan {', '.join(antecedents[:3])} dengan {', '.join(consequents[:3])}")
-                                #st.write(f"- **Cross-selling**: Tampilkan {', '.join(consequents[:3])} saat pelanggan melihat {', '.join(antecedents[:3])}")
-                                #st.write(f"- **Confidence**: {top_rule['confidence']:.1%}, **Lift**: {top_rule['lift']:.2f}")
+                                st.write(f"- **Bundling**: Gabungkan {', '.join(antecedents[:3])} dengan {', '.join(consequents[:3])}")
+                                st.write(f"- **Cross-selling**: Tampilkan {', '.join(consequents[:3])} saat pelanggan melihat {', '.join(antecedents[:3])}")
+                                st.write(f"- **Confidence**: {top_rule['confidence']:.1%}, **Lift**: {top_rule['lift']:.2f}")
                 
                 # Overall recommendations
                 st.subheader("📈 Rekomendasi Umum")
