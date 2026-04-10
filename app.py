@@ -39,7 +39,7 @@ with st.sidebar:
     
     st.subheader("Association Rules")
     min_support = st.slider("Min Support", 0.01, 0.2, 0.01, 0.01)
-    min_confidence = st.slider("Min Confidence", 0.1, 0.8, 0.10, 0.10)
+    min_confidence = st.slider("Min Confidence", 0.1, 0.8, 0.10, 0.05)
 
 # Fungsi untuk memuat data
 @st.cache_data
