@@ -583,38 +583,38 @@ def main():
                         st.write(f"**Dominant RFM Segment:** {dominant_segment}")
                         
                         # Generate recommendations based on characteristics
-                        st.write("**Rekomendasi Strategi:**")
+                        #st.write("**Rekomendasi Strategi:**")
                         
-                        recommendations = []
+                        #recommendations = []
                         
-                        if avg_recency < 30:
-                            recommendations.append("✅ **Pelanggan Aktif**: Pertahankan dengan program loyalitas")
-                        elif avg_recency < 90:
-                            recommendations.append("⚠️ **Perlu Perhatian**: Kirim promo re-engagement")
+                        #if avg_recency < 30:
+                            #recommendations.append("✅ **Pelanggan Aktif**: Pertahankan dengan program loyalitas")
+                        #elif avg_recency < 90:
+                            #recommendations.append("⚠️ **Perlu Perhatian**: Kirim promo re-engagement")
                         
-                        if avg_frequency > 5:
-                            recommendations.append("💎 **Sering Belanja**: Tawarkan membership premium")
-                        elif avg_frequency <= 2:
-                            recommendations.append("🎯 **Sesekali Belanja**: Tingkatkan frekuensi dengan bundling")
+                        #if avg_frequency > 5:
+                            #recommendations.append("💎 **Sering Belanja**: Tawarkan membership premium")
+                        #elif avg_frequency <= 2:
+                            #recommendations.append("🎯 **Sesekali Belanja**: Tingkatkan frekuensi dengan bundling")
                         
-                        if avg_monetary > cluster_data['Monetary'].median() * 2:
-                            recommendations.append("💰 **High Value**: Tawarkan produk premium dan VIP service")
+                        #if avg_monetary > cluster_data['Monetary'].median() * 2:
+                            #recommendations.append("💰 **High Value**: Tawarkan produk premium dan VIP service")
                         
-                        for rec in recommendations:
-                            st.write(f"- {rec}")
+                        #for rec in recommendations:
+                            #st.write(f"- {rec}")
                         
                         # Add association-based recommendations if available
-                        if 'association_results' in locals() and cluster_num in association_results:
-                            rules = association_results[cluster_num]
-                            if len(rules) > 0:
-                                st.write("**Rekomendasi Produk Berdasarkan Asosiasi:**")
-                                top_rule = rules.iloc[0]
-                                antecedents = list(top_rule['antecedents'])
-                                consequents = list(top_rule['consequents'])
+                        #if 'association_results' in locals() and cluster_num in association_results:
+                            #rules = association_results[cluster_num]
+                            #if len(rules) > 0:
+                                #st.write("**Rekomendasi Produk Berdasarkan Asosiasi:**")
+                                #top_rule = rules.iloc[0]
+                                #antecedents = list(top_rule['antecedents'])
+                                #consequents = list(top_rule['consequents'])
                                 
-                                st.write(f"- **Bundling**: Gabungkan {', '.join(antecedents[:3])} dengan {', '.join(consequents[:3])}")
-                                st.write(f"- **Cross-selling**: Tampilkan {', '.join(consequents[:3])} saat pelanggan melihat {', '.join(antecedents[:3])}")
-                                st.write(f"- **Confidence**: {top_rule['confidence']:.1%}, **Lift**: {top_rule['lift']:.2f}")
+                                #st.write(f"- **Bundling**: Gabungkan {', '.join(antecedents[:3])} dengan {', '.join(consequents[:3])}")
+                                #st.write(f"- **Cross-selling**: Tampilkan {', '.join(consequents[:3])} saat pelanggan melihat {', '.join(antecedents[:3])}")
+                                #st.write(f"- **Confidence**: {top_rule['confidence']:.1%}, **Lift**: {top_rule['lift']:.2f}")
                 
                 # Overall recommendations
                 st.subheader("📈 Rekomendasi Umum")
