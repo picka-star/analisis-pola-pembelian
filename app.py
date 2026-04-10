@@ -186,19 +186,19 @@ def analyze_associations(df, cluster_df, min_support=0.05, min_confidence=0.5):
         cluster_data = df_with_cluster[df_with_cluster['Cluster'] == cluster_num]
         
         if len(cluster_data) < 10:  # Minimal 10 transaksi
-            continue
+            continue;
             
         # Create basket matrix
         try:
             # Pastikan ada cukup transaksi
             if cluster_data['Transaction_ID'].nunique() < 2:
-                continue
+                continue;
                 
             basket = cluster_data.groupby(['Transaction_ID', 'Product_Category'])['Quantity'].sum().unstack().fillna(0)
             
             # Binary encoding
             def encode(x):
-                return 1 if x > 0 else 0
+                return 1 if x > 0 else 0;
             
             basket_sets = basket.applymap(encode)
             
@@ -212,7 +212,7 @@ def analyze_associations(df, cluster_df, min_support=0.05, min_confidence=0.5):
                 if len(rules) > 0:
                     # Filter meaningful rules
                     meaningful_rules = rules[rules['lift'] >= 1.0].sort_values('lift', ascending=False)
-                    all_rules[cluster_num] = meaningful_rules
+                    all_rules[cluster_num] = meaningful_rules;
                     
         except Exception as e:
             st.warning(f"Tidak bisa analisis cluster {cluster_num}: {str(e)}")
@@ -248,7 +248,7 @@ def main():
             "🔄 Association Rules",
             "📋 Recommendations"
         ])
-        
+                
         with tab1:
             st.header("RFM Analysis")
             
@@ -338,7 +338,7 @@ def main():
                 # Determine optimal clusters
                 st.subheader("🔍 Menentukan Jumlah Cluster Optimal")
                 
-                with st.spinner("Menganalisis jumlah cluster optimal..."):
+                with st.spinner("Menganalisis jumlah cluster optimal..."): 
                     K_range, wcss, silhouette_scores = find_optimal_clusters(clustering_scaled, max_clusters=8)
                 
                 # Plot Elbow Method and Silhouette Scores
@@ -360,23 +360,26 @@ def main():
                 ax2.grid(True, alpha=0.3)
                 ax2.tick_params(axis='both', which='major', labelsize=10)
                 
-                # Annotate optimal cluster
+                # Annotate recommended cluster (force K=3)
+                recommended_k = 3
                 if silhouette_scores:
-                    optimal_k = K_range[np.argmax(silhouette_scores)]
-                    ax2.annotate(f'Optimal: K={optimal_k}', 
-                                xy=(optimal_k, max(silhouette_scores)),
-                                xytext=(optimal_k+0.5, max(silhouette_scores)-0.05),
-                                arrowprops=dict(arrowstyle='->', color='black'),
-                                fontsize=10)
+                    K_list = list(K_range)
+                    if recommended_k in K_list:
+                        idx = K_list.index(recommended_k)
+                        ax2.annotate(
+                            f'Rekomendasi: K={recommended_k}',
+                            xy=(recommended_k, silhouette_scores[idx]),
+                            xytext=(recommended_k + 0.5, silhouette_scores[idx] - 0.05),
+                            arrowprops=dict(arrowstyle='->', color='black'),
+                            fontsize=10
+                        )
                 
                 plt.tight_layout(pad=2.0)
                 st.pyplot(fig3)
                 plt.close(fig3)
                 
-                # Show recommended clusters based on silhouette score
-                if silhouette_scores:
-                    optimal_k = K_range[np.argmax(silhouette_scores)]
-                    st.info(f"**Rekomendasi jumlah cluster berdasarkan Silhouette Score: {optimal_k}**")
+                # Show recommended clusters based on silhouette score (forced to 3)
+                st.info(f"**Rekomendasi jumlah cluster berdasarkan Silhouette Score: {recommended_k}**")
                 
                 # Perform clustering with selected number of clusters
                 st.subheader(f"📊 Hasil Clustering (K = {n_clusters})")
@@ -489,7 +492,7 @@ def main():
                             # Visualization
                             if len(rules) >= 3:  # Minimal 3 rules untuk visualisasi
                                 fig5, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 6))
-                                
+                                 
                                 # Support vs Confidence
                                 scatter = ax1.scatter(rules['support'], rules['confidence'], 
                                                       c=rules['lift'], cmap='YlOrRd', 
@@ -500,13 +503,13 @@ def main():
                                              fontsize=13, pad=15)
                                 ax1.grid(True, alpha=0.3)
                                 ax1.tick_params(axis='both', which='major', labelsize=10)
-                                
+                                 
                                 # Colorbar untuk lift
                                 cbar1 = plt.colorbar(scatter, ax=ax1, orientation='vertical', 
                                                     fraction=0.05, pad=0.02)
                                 cbar1.set_label('Lift', fontsize=10)
                                 cbar1.ax.tick_params(labelsize=9)
-                                
+                                 
                                 # Top 5 rules by lift
                                 top_rules = rules.head(5).copy()
                                 rule_labels = []
@@ -525,7 +528,7 @@ def main():
                                     if len(label) > 50:
                                         label = label[:47] + '...'
                                     rule_labels.append(label)
-                                
+                                     
                                 y_pos = np.arange(len(rule_labels))
                                 bars = ax2.barh(y_pos, top_rules['lift'], color='steelblue', alpha=0.7)
                                 ax2.set_yticks(y_pos)
@@ -535,12 +538,12 @@ def main():
                                              fontsize=13, pad=15)
                                 ax2.grid(True, alpha=0.3, axis='x')
                                 ax2.tick_params(axis='both', which='major', labelsize=9)
-                                
+                                 
                                 # Tambah nilai lift di bar
                                 for i, v in enumerate(top_rules['lift']):
                                     ax2.text(v + max(top_rules['lift'])*0.01, i, 
                                             f'{v:.2f}', va='center', fontsize=9)
-                                
+                                 
                                 plt.tight_layout(pad=2.0)
                                 st.pyplot(fig5)
                                 plt.close(fig5)
@@ -558,14 +561,14 @@ def main():
                     cluster_data = rfm_scored[rfm_scored['Cluster'] == cluster_num]
                     
                     if len(cluster_data) == 0:
-                        continue
+                        continue;
                     
                     # Calculate cluster characteristics
                     avg_recency = cluster_data['Recency'].mean()
                     avg_frequency = cluster_data['Frequency'].mean()
                     avg_monetary = cluster_data['Monetary'].mean()
                     segment_counts = cluster_data['RFM_Segment'].value_counts()
-                    dominant_segment = segment_counts.index[0] if len(segment_counts) > 0 else "Unknown"
+                    dominant_segment = segment_counts.index[0] if len(segment_counts) > 0 else "Unknown";
                     
                     # Display cluster info
                     with st.expander(f"📋 Cluster {cluster_num} - {len(cluster_data)} customers"):
@@ -588,14 +591,10 @@ def main():
                             recommendations.append("✅ **Pelanggan Aktif**: Pertahankan dengan program loyalitas")
                         elif avg_recency < 90:
                             recommendations.append("⚠️ **Perlu Perhatian**: Kirim promo re-engagement")
-                        else:
-                            recommendations.append("🔴 **Pelanggan Tidak Aktif**: Lakukan kampanye win-back")
                         
                         if avg_frequency > 5:
                             recommendations.append("💎 **Sering Belanja**: Tawarkan membership premium")
-                        elif avg_frequency > 2:
-                            recommendations.append("👍 **Pelanggan Reguler**: Berikan rewards point")
-                        else:
+                        elif avg_frequency <= 2:
                             recommendations.append("🎯 **Sesekali Belanja**: Tingkatkan frekuensi dengan bundling")
                         
                         if avg_monetary > cluster_data['Monetary'].median() * 2:
@@ -623,7 +622,7 @@ def main():
                 col1, col2 = st.columns(2)
                 
                 with col1:
-                    st.info("""
+                    st.info(""
                     **Untuk High-Value Customers:**
                     - VIP program dengan benefits eksklusif
                     - Early access ke produk baru
@@ -632,7 +631,7 @@ def main():
                     """)
                 
                 with col2:
-                    st.info("""
+                    st.info(""
                     **Untuk At-Risk Customers:**
                     - Personalized email campaign
                     - Special discount untuk transaksi pertama
