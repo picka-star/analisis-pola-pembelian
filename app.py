@@ -622,7 +622,7 @@ def main():
                 col1, col2 = st.columns(2)
                 
                 with col1:
-                    st.info(""
+                    st.info("""
                     **Untuk High-Value Customers:**
                     - VIP program dengan benefits eksklusif
                     - Early access ke produk baru
@@ -631,7 +631,7 @@ def main():
                     """)
                 
                 with col2:
-                    st.info(""
+                    st.info("""
                     **Untuk At-Risk Customers:**
                     - Personalized email campaign
                     - Special discount untuk transaksi pertama
